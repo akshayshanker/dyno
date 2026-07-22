@@ -1,0 +1,33 @@
+@stage: cons_savings_iid
+
+Y   @def R
+β   @in (0,1)
+γ   @in R+
+r   @in R++
+μ_y @in R
+σ_y @in R+
+y   @in Y  @dist N(μ_y, σ_y)
+
+[name=g_ad, (b @in R+, y) @arvl -> (w @in R+) @dcsn] {
+    w = exp(y) + b*r              :: [name=cash_on_hand]
+}
+
+[name=g_dc, (w, c @control @in R+) @dcsn -> (a @in R+) @cntn] {
+    a = w - c
+}
+
+[name=G_dc, (V[>] @in R, c) @cntn -> (V @in R, dV @in R++) @dcsn] {
+    V  = c^(1-γ)/(1-γ) + β*V[>]   :: [name=value]
+    dV = c^(-γ)                   :: [name=marginal]
+}
+
+[name=G_ad, (V, dV) @dcsn -> (V[<] @in R, dV[<] @in R++) @arvl] {
+    V[<]  = E_{y}(V)              :: [name=value]
+    dV[<] = E_{y}(r * dV)         :: [name=marginal]
+}
+
+[!policy, name=pol_c, (dV[>] @in R++, a, w) -> (c)] {
+    c[>] = (β*dV[>])^(-1/γ)        :: [name=InvEuler, @node]
+    w[>] = a + c[>]                :: [name=regrid,   @node]
+    c    = evaluate(c[>], w[>], w) :: [name=pol_func]
+}

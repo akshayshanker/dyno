@@ -1,0 +1,107 @@
+// stage_grammar.lark — the block surface of bellman-ddsl spec 0.3,
+// as an extension of dynspec (demo). Self-contained: duplicates the
+// expression ladder rather than editing grammar.lark, following the
+// modfile_grammar.lark precedent. See STAGE-DECISIONS.md.
+
+?start: file
+file: _NL? fstmt (_NL fstmt)* _NL?
+?fstmt: metadata | declaration | block
+
+// dyno's metadata line; @stage: <name> designates a stage file
+metadata: _AT NAME ":" METADATA_SCALAR
+
+// declarations: subject @classifier... [<- value]
+declaration: dsingle typing+ dvalue?
+    | dtuple typing+ dvalue?
+?dsingle: cname | pvar
+dtuple: "(" coord ("," coord)* ")"
+coord: pvar typing* | cname typing*
+dvalue: _ASSIGN formula
+_ASSIGN.2: "<-" | ":="
+
+// blocks: parsed header + body
+block: header _body
+header: "[" hentry ("," hentry)* "]"
+?hentry: kv | tagbang | signature | baretag
+kv: cname "=" kval
+?kval: cname | NUMBER
+tagbang: TAGBANG
+baretag: cname
+signature: side "->" side
+side: "(" [coord ("," coord)*] ")" typing*
+
+_body: "{" _NL? bstmt (_NL bstmt)* _NL? "}"
+?bstmt: block | statement
+statement: equality STMT_META?
+
+// the @ register — payload sub-grammar per spec 0.3 §6 (S1)
+typing: _AT classifier
+?classifier: "in" domain    -> c_in
+    | "dist" law            -> c_dist
+    | "def" domain          -> c_def
+    | PERCH                 -> c_perch
+    | "control"             -> c_control
+    | "node"                -> c_node
+
+?domain: dnamed
+    | interval
+    | dset
+    | domain "×" domain     -> dprod
+dnamed: RPLUS | cname
+interval: "(" formula "," formula ")"   -> ivl_open_open
+    | "(" formula "," formula "]"       -> ivl_open_closed
+    | "[" formula "," formula ")"       -> ivl_closed_open
+    | "[" formula "," formula "]"       -> ivl_closed_closed
+dset: "{" cname ("," cname)* "}"
+law: cname "(" arr ("," arr)* ")"
+?arr: formula
+    | "(" arr ("," arr)* ")" -> arrtuple
+
+// dynspec's expression ladder (duplicated) + Operator braces + perch marks
+equality: formula "=" formula
+?formula: sum
+?sum: product
+    | sum "+" product  -> add
+    | sum "-" product  -> sub
+    | "-" product      -> neg
+?product: molecule
+    | product "*" molecule -> mul
+    | product "/" molecule -> div
+?molecule: atom
+    | atom _POW atom   -> pow
+_POW: "^" | "**"
+?atom: NUMBER          -> number
+    | pvar
+    | opcall
+    | call
+    | cname            -> const
+    | "(" formula ")"
+
+pvar: cname "[" PMARK "]"
+PMARK: "<" | ">"
+opcall: cname "{" cname ("," cname)* "}" "(" formula ("," formula)* ")"
+?call: cname "(" formula ("," formula)* ")" -> call
+
+!cname: NAME -> name
+
+// terminals
+_AT: "@"
+TAGBANG: "!" NAME
+PERCH.2: "arvl" | "dcsn" | "cntn"
+RPLUS.3: /R\+{1,2}/
+METADATA_SCALAR: /[^\s#\r\n][^\r\n#]*/
+STMT_META.3: /[ \t]*::[ \t]*(?:\[[^\]\r\n]*\]|"[^"\r\n]*"|[^\r\n#{]+)/
+_NL: NEWLINE+
+UNICODE_LETTER: /[^\W\d_\$]/
+NAME: UNICODE_LETTER ("_"|UNICODE_LETTER|DIGIT)*
+
+%import common.DIGIT
+%import common.NUMBER
+%import common.NEWLINE
+%import common.WS_INLINE
+
+SOL_COMMENT.10: /^[ \t]*#[^\r\n]*(\r?\n)*/m
+EOL_COMMENT.9: /(?<!^)[ \t]*#[^\r\n]*/m
+%ignore SOL_COMMENT
+%ignore EOL_COMMENT
+%ignore WS_INLINE

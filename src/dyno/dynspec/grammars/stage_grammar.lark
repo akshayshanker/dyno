@@ -40,12 +40,13 @@ statement: equality STMT_META?
 
 // the @ register — payload sub-grammar per spec 0.3 §6 (S1)
 typing: _AT classifier
+// @dist takes an ordinary expression (the law is a call with tuple
+// arguments); @node left the @ register for the !-tag register
 ?classifier: "in" domain    -> c_in
-    | "dist" law            -> c_dist
+    | "dist" formula        -> c_dist
     | "def" domain          -> c_def
     | PERCH                 -> c_perch
     | "control"             -> c_control
-    | "node"                -> c_node
 
 ?domain: dnamed
     | interval
@@ -57,7 +58,6 @@ interval: "(" formula "," formula ")"   -> ivl_open_open
     | "[" formula "," formula ")"       -> ivl_closed_open
     | "[" formula "," formula "]"       -> ivl_closed_closed
 dset: "{" cname ("," cname)* "}"
-law: cname "(" formula ("," formula)* ")"
 
 // dynspec's expression ladder (duplicated) + Operator braces + perch marks
 equality: formula "=" formula

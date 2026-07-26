@@ -11,8 +11,8 @@
     [!branch, label=retire, () -> (a_r @in R+) @cntn] { a_r = a_d }
 }
 
-[name=G_dc, (V_w[>] @in R, V_r[>] @in R) @cntn -> (V @in R) @dcsn] {
-    V = max_{d}(V_w[>] - δ, V_r[>])   :: [name=choice_value]
+[name=G_dc, (V_w[>] @in R, V_r[>] @in R, d) @cntn -> (V @in R) @dcsn] {
+    V = evaluate_{d}(V_w[>] - δ, V_r[>]) :: [name=choice_value]
 }
 
 [name=G_ad, (V) @dcsn -> (V[<] @in R) @arvl] {

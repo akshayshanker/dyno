@@ -41,12 +41,20 @@ left open is recorded here.
   only when it is absent, so the grammar demo runs in pure-Python
   environments; with the real extension installed the stub is inert.
 - **Not in this demo:** the discipline checker (spec §5), the
-  splitter extension for `@node`/`!word` in statement payloads, the
-  lowering to typed AST, and quoted-string tags in headers
-  (dynspec tip `312e8ea` newly accepts them in his raw carriers —
-  pending finding 6 of the spec's project record).
+  splitter extension for `@node`/`!word` in statement payloads, and
+  the lowering to typed AST.
+- **Quoted-string header tags** (26 Jul): `strtag` admits a quoted
+  string in a header bracket as a tag, matching dynspec tip
+  `312e8ea`, whose reader normalizes a quoted bracket item as a tag
+  with that text. Single or double quotes, as his reader accepts.
+- **No authored `max`** (26 Jul, spec ruling): the selection is
+  authored once, in the policy block's `argmax`; the branch kernel
+  lists the control in its source and evaluates the branch
+  objectives at it (`evaluate_{d}` — parsed by the existing opcall
+  rule, no grammar change). `ret_choice.dynspec` updated to match
+  the spec's example 2.2.
 
 Verified: the three worked examples of spec 0.3 §2, extracted
 verbatim to `examples/stages/*.dynspec`, parse with the structural
 counts asserted in `tests/test_stage_grammar.py` (lark 1.3.1, LALR,
-contextual lexer).
+contextual lexer), plus a quoted-tag case.

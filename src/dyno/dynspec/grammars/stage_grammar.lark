@@ -22,11 +22,13 @@ _ASSIGN.2: "<-" | ":="
 // blocks: parsed header + body
 block: header _body
 header: "[" hentry ("," hentry)* "]"
-?hentry: kv | tagbang | signature | baretag
+?hentry: kv | tagbang | signature | baretag | strtag
 kv: cname "=" kval
 ?kval: cname | NUMBER
 tagbang: TAGBANG
 baretag: cname
+// a quoted string in a header bracket is a tag (dyno tip 312e8ea)
+strtag: STAGE_STRING
 signature: side "->" side
 side: "(" [coord ("," coord)*] ")" typing*
 
@@ -87,6 +89,7 @@ opcall: cname "{" cname ("," cname)* "}" "(" formula ("," formula)* ")"
 // terminals
 _AT: "@"
 TAGBANG: "!" NAME
+STAGE_STRING: /"[^"\r\n]*"|'[^'\r\n]*'/
 PERCH.2: "arvl" | "dcsn" | "cntn"
 RPLUS.3: /R\+{1,2}/
 METADATA_SCALAR: /[^\s#\r\n][^\r\n#]*/

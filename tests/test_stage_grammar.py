@@ -33,3 +33,19 @@ def test_structure_counts():
     cons = trees["cons_savings_iid.dynspec"]
     # operators with subscripts (E_{y}) and plain calls (evaluate) both parse
     assert list(cons.find_data("opcall"))
+
+
+def test_quoted_string_header_tag(tmp_path):
+    # a quoted string in a header bracket is a tag (dyno tip 312e8ea)
+    src = (
+        "@stage: demo\n"
+        "beta @in (0,1)\n"
+        '[name=g_ad, "identity edge", (a @in R+) @arvl -> (b @in R+) @dcsn] {\n'
+        "    b = a\n"
+        "}\n"
+    )
+    p = tmp_path / "quoted_tag.dynspec"
+    p.write_text(src, encoding="utf-8")
+    tree = parse_stage_file(str(p))
+    tags = list(tree.find_data("strtag"))
+    assert len(tags) == 1

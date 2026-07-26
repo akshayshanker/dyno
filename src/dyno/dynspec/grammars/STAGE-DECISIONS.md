@@ -23,7 +23,7 @@ left open is recorded here.
   tags, `!word` tags, `key=value` pairs, and the signature
   `(…) -> (…)` with typed sides. Interiors may contain `]` (`V[>]`),
   which is what forces the parsed header.
-- **Perch marks ride the index.** `V[>]`, `c[<]` parse by a
+- **Perch marks are index values.** `V[>]`, `c[<]` parse by a
   variable-shaped rule (`cname "[" ("<"|">") "]"`); dyno's `t`/`~`
   forms are not used by stage files and are omitted here.
 - **Payload sub-grammar (S1).** `@in`/`@def`/`@dist` payloads own the

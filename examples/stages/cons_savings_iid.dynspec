@@ -8,25 +8,25 @@ r   @in R++
 σ_y @in R+
 y   @in Y  @dist N(μ_y, σ_y)
 
-[!g_ad, (b @in R+, y) @arvl -> (w @in R+) @dcsn] {
+[id=g_ad, (b @in R+, y) @arvl -> (w @in R+) @dcsn] {
     w = exp(y) + b*r              :: [id=cash_on_hand]
 }
 
-[!g_dc, (w, c @control @in R+) @dcsn -> (a @in R+) @cntn] {
+[id=g_dc, (w, c @control @in R+) @dcsn -> (a @in R+) @cntn] {
     a = w - c
 }
 
-[!G_dc, (V[>] @in R, c) @cntn -> (V @in R, dV @in R++) @dcsn] {
+[id=G_dc, (V[>] @in R, c) @cntn -> (V @in R, dV @in R++) @dcsn] {
     V  = c^(1-γ)/(1-γ) + β*V[>]   :: [id=value]
     dV = c^(-γ)                   :: [id=marginal]
 }
 
-[!G_ad, (V, dV) @dcsn -> (V[<] @in R, dV[<] @in R++) @arvl] {
+[id=G_ad, (V, dV) @dcsn -> (V[<] @in R, dV[<] @in R++) @arvl] {
     V[<]  = E_{y}(V)              :: [id=value]
     dV[<] = E_{y}(r * dV)         :: [id=marginal]
 }
 
-[!policy, (dV[>] @in R++, a, w) -> (c)] {
+[id=pol, (dV[>] @in R++, a, w) -> (c)] {
     c[>] = (β*dV[>])^(-1/γ)        :: [id=InvEuler, @node]
     w[>] = a + c[>]                :: [id=regrid,   @node]
     c    = evaluate(c[>], w[>], w) :: [id=pol_func]

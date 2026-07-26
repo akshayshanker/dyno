@@ -2,23 +2,23 @@
 
 δ @in R+
 
-[!g_ad, (a @in R+) @arvl -> (a_d @in R+) @dcsn] {
+[id=g_ad, (a @in R+) @arvl -> (a_d @in R+) @dcsn] {
     a_d = a
 }
 
-[!g_dc, (a_d, d @control @in {work, retire}) @dcsn -> ()] {
-    [!branch, label=work,   () -> (a_w @in R+) @cntn] { a_w = a_d }
-    [!branch, label=retire, () -> (a_r @in R+) @cntn] { a_r = a_d }
+[id=g_dc, (a_d, d @control @in {work, retire}) @dcsn -> ()] {
+    [label=work,   () -> (a_w @in R+) @cntn] { a_w = a_d }
+    [label=retire, () -> (a_r @in R+) @cntn] { a_r = a_d }
 }
 
-[!G_dc, (V_w[>] @in R, V_r[>] @in R, d) @cntn -> (V @in R) @dcsn] {
+[id=G_dc, (V_w[>] @in R, V_r[>] @in R, d) @cntn -> (V @in R) @dcsn] {
     V = (V_w[>] - δ, V_r[>])[d]      :: [id=choice_value]
 }
 
-[!G_ad, (V) @dcsn -> (V[<] @in R) @arvl] {
+[id=G_ad, (V) @dcsn -> (V[<] @in R) @arvl] {
     V[<] = V
 }
 
-[!policy, (V_w[>], V_r[>]) -> (d)] {
+[id=pol, (V_w[>], V_r[>]) -> (d)] {
     d = argmax_{d}(V_w[>] - δ, V_r[>]) :: [id=choice]
 }

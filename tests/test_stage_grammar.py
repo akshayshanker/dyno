@@ -44,7 +44,7 @@ def test_tuple_locals_and_selection(tmp_path):
     src = (
         "@stage: t\n"
         "delta @in R+\n"
-        "[!G_dc, (V_w[>] @in R, V_r[>] @in R, d) @cntn -> (V @in R) @dcsn] {\n"
+        "[id=G_dc, (V_w[>] @in R, V_r[>] @in R, d) @cntn -> (V @in R) @dcsn] {\n"
         "    Q = (V_w[>] - delta, V_r[>])\n"
         "    y = Q[1]\n"
         "    z = Q[d]\n"
@@ -64,7 +64,7 @@ def test_quoted_string_header_tag(tmp_path):
     src = (
         "@stage: demo\n"
         "beta @in (0,1)\n"
-        '[!g_ad, "identity edge", (a @in R+) @arvl -> (b @in R+) @dcsn] {\n'
+        '[id=g_ad, "identity edge", (a @in R+) @arvl -> (b @in R+) @dcsn] {\n'
         "    b = a\n"
         "}\n"
     )

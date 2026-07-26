@@ -42,19 +42,19 @@ statement: equality STMT_META?
 typing: _AT classifier
 // @dist takes an ordinary expression (the law is a call with tuple
 // arguments); @node left the @ register for the !-tag register
-?classifier: "in" domain    -> c_in
+?classifier: "in" setexpr   -> c_in
     | "dist" formula        -> c_dist
-    | "def" domain          -> c_def
+    | "def" setexpr         -> c_def
     | PERCH                 -> c_perch
     | "control"             -> c_control
     | "marginal"            -> c_marginal
     | "state"               -> c_state
     | "value"               -> c_value
 
-?domain: dnamed
+?setexpr: dnamed
     | interval
     | dset
-    | domain "×" domain     -> dprod
+    | setexpr "×" setexpr   -> dprod
 dnamed: RPLUS | cname
 interval: "(" formula "," formula ")"   -> ivl_open_open
     | "(" formula "," formula "]"       -> ivl_open_closed

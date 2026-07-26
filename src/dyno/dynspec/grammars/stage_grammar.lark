@@ -55,9 +55,7 @@ interval: "(" formula "," formula ")"   -> ivl_open_open
     | "[" formula "," formula ")"       -> ivl_closed_open
     | "[" formula "," formula "]"       -> ivl_closed_closed
 dset: "{" cname ("," cname)* "}"
-law: cname "(" arr ("," arr)* ")"
-?arr: formula
-    | "(" arr ("," arr)* ")" -> arrtuple
+law: cname "(" formula ("," formula)* ")"
 
 // dynspec's expression ladder (duplicated) + Operator braces + perch marks
 equality: formula "=" formula
@@ -73,13 +71,22 @@ equality: formula "=" formula
     | atom _POW atom   -> pow
 _POW: "^" | "**"
 ?atom: NUMBER          -> number
+    | tupidx
+    | tuple
     | pvar
     | opcall
     | call
     | cname            -> const
     | "(" formula ")"
 
-pvar: cname "[" PMARK "]"
+// one tuple rule for the whole grammar: law parameters and formula
+// position alike; a tuple is a finite family, selection evaluates it
+tuple: "(" formula ("," formula)+ ")"
+tupidx: tuple "[" formula "]"
+// every bracket is selection along an axis of the head: dates and
+// ~ (dyno), the perch marks < >, a name key, or a 1-based position
+pvar: cname ("[" pidx "]")+
+?pidx: PMARK | cname | NUMBER
 PMARK: "<" | ">"
 opcall: cname "{" cname ("," cname)* "}" "(" formula ("," formula)* ")"
 ?call: cname "(" formula ("," formula)* ")" -> call

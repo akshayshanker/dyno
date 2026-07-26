@@ -49,10 +49,20 @@ left open is recorded here.
   with that text. Single or double quotes, as his reader accepts.
 - **No authored `max`** (26 Jul, spec ruling): the selection is
   authored once, in the policy block's `argmax`; the branch kernel
-  lists the control in its source and evaluates the branch
-  objectives at it (`evaluate_{d}` — parsed by the existing opcall
-  rule, no grammar change). `ret_choice.dynspec` updated to match
-  the spec's example 2.2.
+  lists the control in its source and selects among the branch
+  objectives. `ret_choice.dynspec` updated to match the spec's
+  example 2.2.
+- **Tuples and selection** (26 Jul, spec ruling): one tuple rule
+  serves the whole grammar — law parameters (the covariance matrix)
+  and formula position alike; `arr`/`arrtuple` deleted. A tuple is
+  a finite family; selection evaluates it. Every bracket is
+  selection along an axis of its head: dyno's dates and `~`, the
+  perch marks `<` `>`, a name key (`Q[d]`, `V[>][work]`), or a
+  1-based position (`Q[1]`). `x = (a, b)` introduces a tuple-valued
+  local; an integer bracket keeps dyno's date reading on every head
+  that is not a tuple-local (tuple-locals are new names, so no
+  existing file changes meaning). The kernel line is the literal
+  form `V = (V_w[>] - δ, V_r[>])[d]`.
 
 Verified: the three worked examples of spec 0.3 §2, extracted
 verbatim to `examples/stages/*.dynspec`, parse with the structural

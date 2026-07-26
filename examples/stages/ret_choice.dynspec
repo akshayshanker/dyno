@@ -12,7 +12,7 @@
 }
 
 [!G_dc, (V_w[>] @in R, V_r[>] @in R, d) @cntn -> (V @in R) @dcsn] {
-    V = evaluate_{d}(V_w[>] - δ, V_r[>]) :: [id=choice_value]
+    V = (V_w[>] - δ, V_r[>])[d]      :: [id=choice_value]
 }
 
 [!G_ad, (V) @dcsn -> (V[<] @in R) @arvl] {

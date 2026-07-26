@@ -29,10 +29,34 @@ def test_structure_counts():
     assert len(list(ret.find_data("block"))) == 7  # 5 top + 2 arms
     port = trees["port.dynspec"]
     # the joint law's covariance matrix parses as nested tuples
-    assert list(port.find_data("arrtuple"))
+    assert list(port.find_data("tuple"))
+    ret = trees["ret_choice.dynspec"]
+    # the kernel selects from a literal tuple of branch objectives
+    assert list(ret.find_data("tupidx"))
     cons = trees["cons_savings_iid.dynspec"]
     # operators with subscripts (E_{y}) and plain calls (evaluate) both parse
     assert list(cons.find_data("opcall"))
+
+
+def test_tuple_locals_and_selection(tmp_path):
+    # x = (a, b) introduces a tuple-valued local; every bracket is
+    # selection: Q[1] a position, Q[d] a key, V[>][work] iterated
+    src = (
+        "@stage: t\n"
+        "delta @in R+\n"
+        "[!G_dc, (V_w[>] @in R, V_r[>] @in R, d) @cntn -> (V @in R) @dcsn] {\n"
+        "    Q = (V_w[>] - delta, V_r[>])\n"
+        "    y = Q[1]\n"
+        "    z = Q[d]\n"
+        "    V = (V_w[>] - delta, V_r[>])[d]\n"
+        "    w = V[>][work]\n"
+        "}\n"
+    )
+    p = tmp_path / "tuples.dynspec"
+    p.write_text(src, encoding="utf-8")
+    tree = parse_stage_file(str(p))
+    assert len(list(tree.find_data("tuple"))) == 2
+    assert len(list(tree.find_data("tupidx"))) == 1
 
 
 def test_quoted_string_header_tag(tmp_path):

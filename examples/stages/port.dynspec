@@ -26,7 +26,7 @@ R   @in R++
     V[<] = V
 }
 
-[id=pol, (V[>], dV[>] @in R++) -> (ς)] {
+[id=pol, (V[>], dV[>] @in R++ @marginal) -> (ς)] {
     ς     = argmax_{ς}(E_{Ψ,θ}(V[>]))  :: [id=objective]
     foc_ς = E_{Ψ,θ}(dV[>]*(Ψ - R))     :: [id=foc]
 }

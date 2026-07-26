@@ -47,6 +47,9 @@ typing: _AT classifier
     | "def" domain          -> c_def
     | PERCH                 -> c_perch
     | "control"             -> c_control
+    | "marginal"            -> c_marginal
+    | "state"               -> c_state
+    | "value"               -> c_value
 
 ?domain: dnamed
     | interval

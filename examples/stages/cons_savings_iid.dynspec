@@ -16,7 +16,7 @@ y   @in Y  @dist N(μ_y, σ_y)
     a = w - c
 }
 
-[id=G_dc, (V[>] @in R, c) @cntn -> (V @in R, dV @in R++) @dcsn] {
+[id=G_dc, (V[>] @in R, c) @cntn -> (V @in R, dV @in R++ @marginal) @dcsn] {
     V  = c^(1-γ)/(1-γ) + β*V[>]   :: [id=value]
     dV = c^(-γ)                   :: [id=marginal]
 }

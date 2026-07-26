@@ -27,7 +27,7 @@ y   @in Y  @dist N(μ_y, σ_y)
 }
 
 [id=pol, (dV[>] @in R++, a, w) -> (c)] {
-    c[>] = (β*dV[>])^(-1/γ)        :: [id=InvEuler, @node]
-    w[>] = a + c[>]                :: [id=regrid,   @node]
+    c[>] = (β*dV[>])^(-1/γ)        :: [id=InvEuler, !node]
+    w[>] = a + c[>]                :: [id=regrid,   !node]
     c    = evaluate(c[>], w[>], w) :: [id=pol_func]
 }

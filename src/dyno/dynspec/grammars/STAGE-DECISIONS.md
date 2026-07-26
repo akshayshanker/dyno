@@ -47,13 +47,19 @@ left open is recorded here.
   string in a header bracket as a tag, matching dynspec tip
   `312e8ea`, whose reader normalizes a quoted bracket item as a tag
   with that text. Single or double quotes, as his reader accepts.
-- **No authored tags; `id=` carries addresses** (26 Jul, spec
-  ruling): the `!word` marked spelling is removed from the
-  extension — tags are dyno's device only (bare or quoted,
-  documentation, carried). Block headers state their derived
-  address as an ordinary key–value (`id=g_dc`, `id=pol`), verified
-  by the checker; on lines `id=` authors the address. Fixtures
-  updated; the extension is one spelling smaller.
+- **Two tag registers; `id=` carries addresses** (26 Jul, spec
+  rulings): bare and quoted tags are dyno's documentation only —
+  carried, never authored in stage files. The marked spelling
+  `!word` (TAGBANG) is the statement- and block-level **type**
+  register, load-bearing: `!node` marks a line as a graph node
+  (replacing the earlier `@node` — `@` types declared objects, `!`
+  types whole equations and blocks); method tags join later with
+  their own constructor. Block headers state their derived address
+  as an ordinary key–value (`id=g_dc`, `id=pol`), verified by the
+  checker; on lines `id=` authors the address. `@def` is likewise
+  no classifier but a Definition entry — an assignment in kind,
+  binding a name to a space (the concrete rule is unchanged; the
+  lowering target moved).
 - **No authored `max`** (26 Jul, spec ruling): the selection is
   authored once, in the policy block's `argmax`; the branch kernel
   lists the control in its source and selects among the branch

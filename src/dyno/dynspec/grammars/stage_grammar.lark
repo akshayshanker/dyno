@@ -22,9 +22,12 @@ _ASSIGN.2: "<-" | ":="
 // blocks: parsed header + body
 block: header _body
 header: "[" hentry ("," hentry)* "]"
-?hentry: kv | signature | baretag | strtag
+?hentry: kv | tagbang | signature | baretag | strtag
 kv: cname "=" kval
 ?kval: cname | NUMBER
+// the ! mark spells statement- and block-level types (!node;
+// method tags later) — load-bearing, unlike documentation tags
+tagbang: TAGBANG
 baretag: cname
 // a quoted string in a header bracket is a tag (dyno tip 312e8ea)
 strtag: STAGE_STRING
@@ -94,6 +97,7 @@ opcall: cname "{" cname ("," cname)* "}" "(" formula ("," formula)* ")"
 
 // terminals
 _AT: "@"
+TAGBANG: "!" NAME
 STAGE_STRING: /"[^"\r\n]*"|'[^'\r\n]*'/
 PERCH.2: "arvl" | "dcsn" | "cntn"
 RPLUS.3: /R\+{1,2}/

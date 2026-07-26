@@ -10,23 +10,23 @@ R   @in R++
                                ((σ_Ψ^2,       ρ_ζ*σ_Ψ*σ_θ),
                                 (ρ_ζ*σ_Ψ*σ_θ, σ_θ^2)))
 
-[name=g_ad, (k @in R++) @arvl -> (k_d @in R++) @dcsn] {
+[!g_ad, (k @in R++) @arvl -> (k_d @in R++) @dcsn] {
     k_d = k
 }
 
-[name=g_dc, (k_d, ς @control @in [0,1], Ψ, θ) @dcsn -> (m @in R++) @cntn] {
+[!g_dc, (k_d, ς @control @in [0,1], Ψ, θ) @dcsn -> (m @in R++) @cntn] {
     m = k_d*(ς*Ψ + (1-ς)*R) + θ
 }
 
-[name=G_dc, (V[>] @in R) @cntn -> (V @in R) @dcsn] {
-    V = E_{Ψ,θ}(V[>])               :: [name=value]
+[!G_dc, (V[>] @in R) @cntn -> (V @in R) @dcsn] {
+    V = E_{Ψ,θ}(V[>])               :: [id=value]
 }
 
-[name=G_ad, (V) @dcsn -> (V[<] @in R) @arvl] {
+[!G_ad, (V) @dcsn -> (V[<] @in R) @arvl] {
     V[<] = V
 }
 
-[!policy, name=pol_ς, (V[>], dV[>] @in R++) -> (ς)] {
-    ς     = argmax_{ς}(E_{Ψ,θ}(V[>]))  :: [name=objective]
-    foc_ς = E_{Ψ,θ}(dV[>]*(Ψ - R))     :: [name=foc]
+[!policy, (V[>], dV[>] @in R++) -> (ς)] {
+    ς     = argmax_{ς}(E_{Ψ,θ}(V[>]))  :: [id=objective]
+    foc_ς = E_{Ψ,θ}(dV[>]*(Ψ - R))     :: [id=foc]
 }

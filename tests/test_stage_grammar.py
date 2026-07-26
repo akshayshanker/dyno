@@ -40,7 +40,7 @@ def test_quoted_string_header_tag(tmp_path):
     src = (
         "@stage: demo\n"
         "beta @in (0,1)\n"
-        '[name=g_ad, "identity edge", (a @in R+) @arvl -> (b @in R+) @dcsn] {\n'
+        '[!g_ad, "identity edge", (a @in R+) @arvl -> (b @in R+) @dcsn] {\n'
         "    b = a\n"
         "}\n"
     )
